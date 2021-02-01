@@ -1,3 +1,5 @@
+from enum import Enum
+
 from .AttributeCheck import *
 import os
 import logging
@@ -5,28 +7,23 @@ import logging
 logging.basicConfig(filename='log.txt',level=logging.ERROR,format="%(asctime)s-%(levelname)s-%(message)s")
 
 
-class Charsets:
-	def __init__(self,value: str) -> None:
-		self.BIG5="Big5"
-		self.UTF8="utf-8"
-		self.ISO_8859_1="iso_8859_1"
-		self.value=value
+class Charsets(Enum):
+	BIG5 = "Big5"
+	UTF8 = "utf-8"
+	ISO_8859_1 = "iso_8859_1"
 
-	def getValue(self) -> str:
-		return self.value
 
 class TxtUtil:
 	
 	def __init__(self) -> None:
 		pass
 
-	def create(filePath: str,dataList: any,charsets: Charsets):
+	def create(self, filePath: str,dataList: any,charsets: Charsets):
 		if AttributeCheck.listNotEmpty(dataList) and AttributeCheck.stringsNotNull(filePath):
 			if not os.path.exists(os.path.dirname(filePath)):
 				os.makedirs(os.path.dirname(filePath))
-
 				try:
-					with open(filePath,'w',encoding=charsets.getValue()) as fp:
+					with open(filePath,'w',encoding=charsets.value()) as fp:
 						if isinstance(dataList,list):
 							fp.writelines(dataList)
 						else:
@@ -41,7 +38,7 @@ class TxtUtil:
 
 		return False
 
-	def createSingalForRecognition(filePath: str, dataList: list)->bool:
+	def createSingalForRecognition(self, filePath: str, dataList: list)->bool:
 		if AttributeCheck.listNotEmpty(dataList) and AttributeCheck.stringsNotNull(filePath):
 			if not os.path.exists(os.path.dirname(filePath)):
 				os.makedirs(os.path.dirname(filePath))
@@ -60,7 +57,7 @@ class TxtUtil:
 					logging.error("IO Exception",exc_info=True)
 					return False
 
-	def read_content(txtPath: str):
+	def read_content(self, txtPath: str):
 		content=[]
 		if AttributeCheck.stringsNotNull(txtPath):
 			if os.path.isfile(txtPath) and os.path.exists(txtPath):
@@ -71,12 +68,11 @@ class TxtUtil:
 		
 		return "\n".join(content)
 
-	
-	def read_lineList(txtPath: str,charset):
+	def read_lineList(self, txtPath: str,charset: Charsets):
 		content=[]
 		if AttributeCheck.stringsNotNull(txtPath):
 			if os.path.isfile(txtPath) and os.path.exists(txtPath):
-				lines=[line for line in open(txtPath,encoding=charset.getValue())]
+				lines=[line for line in open(txtPath,encoding=charset.value)]
 				for l in lines:
 					content.append(l)
 		

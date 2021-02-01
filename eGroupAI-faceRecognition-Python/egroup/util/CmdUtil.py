@@ -2,13 +2,16 @@ import subprocess
 import logging
 import os
 
+
 class CmdUtil:
+  # TODO: add logging
   TASKLIST = "tasklist"
   KILL = "taskkill /F /IM "
 
+  @staticmethod
   def cmdProcessBuilder(commandList: list) -> bool:
-    process=subprocess.Popen(commandList,stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,shell=True)
-
+    process=subprocess.Popen(commandList,stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,shell=True, errors="ignore")
+    print(commandList)
     while process.poll() is None:
       line = process.stdout.readline()
       # print(line,end="")
@@ -31,10 +34,10 @@ class CmdUtil:
       return True
     except:
       logging.error("ERROR",exc_info=True)
-    
+
     return False
 
-  
+
   def isProcessRunning(serviceName: str) -> bool:
     try:
       process=subprocess.Popen([CmdUtil.TASKLIST],stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True,shell=True)
@@ -45,7 +48,7 @@ class CmdUtil:
           return True
     except:
       logging.error("ERROR",exc_info=True)
-    
+
     return False
 
 

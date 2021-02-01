@@ -2,15 +2,16 @@ import json
 from json.decoder import JSONDecodeError
 import re
 
+
 class AttributeCheck:
-	
+
+	@staticmethod
 	def isJSONValid3(json_in_string: str) -> bool:
 		try:
 			json.loads(json_in_string)
 			return True
 		except JSONDecodeError:
 			return False
-
 
 	def objectNotNull(*objects: object) -> bool:
 		size=len(objects)
@@ -22,11 +23,9 @@ class AttributeCheck:
 	def stringsNotNull(*strings: str) -> bool:
 		size=len(strings)
 		for i in range(0,size):
-			if strings[i]==None or strings[i]=="" or strings[i]=="null" or strings[i]=="undefined" or strings[i]=="[]":
+			if strings[i] is None or strings[i]=="" or strings[i]=="null" or strings[i]=="undefined" or strings[i]=="[]":
 				return False
-		return 
-
-
+		return True
 
 	def isUppercase(*strings: str) -> bool:
 		for string in strings:
@@ -48,7 +47,7 @@ class AttributeCheck:
 			except ValueError:
 				return False
 		return True
-	
+
 
 	def integerNotNull_Zero(*integers: int) -> bool:
 		for i in integers:

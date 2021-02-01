@@ -2,8 +2,9 @@ import shutil
 import traceback
 import os
 
+
 class CopyUtil:
-    def copyFile(source: str, dest: str):
+    def copyFile(self,source: str, dest: str):
         try:
           if  not os.path.exists(os.path.dirname(dest)):
               os.mkdir(os.path.dirname(dest))
@@ -13,7 +14,7 @@ class CopyUtil:
           traceback.print_exc()
           return False
 
-    def copyFolder(source: str, dest: str):
+    def copyFolder(self, source: str, dest: str):
       try:
         shutil.copytree(source,dest)
         return True
