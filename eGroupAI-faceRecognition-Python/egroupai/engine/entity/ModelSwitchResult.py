@@ -5,10 +5,10 @@ class ModelSwitchResult:
 		self.reloadTime = None
 		self.faceDB = None
 
-	def getIsSuccess(self):
+	def isSuccess(self):
 		return self.isSuccess        
 
-	def setIsSuccess(self,isSuccess):
+	def setSuccess(self,isSuccess):
 		self.isSuccess=isSuccess     
 		
 

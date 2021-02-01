@@ -84,10 +84,10 @@ class ModelAppendInfo:
 		self.DBFaceDBPath=DBFaceDBPath
 
 
-	def getIsSucess(self):
+	def isSucess(self):
 		return self.isSucess
 
-	def setIsSucess(self,isSucess):
+	def setSucess(self,isSucess):
 		self.isSucess=isSucess
 
 

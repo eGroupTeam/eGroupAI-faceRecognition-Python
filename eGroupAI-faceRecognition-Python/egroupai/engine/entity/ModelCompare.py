@@ -1,155 +1,82 @@
 import logging
 
+from egroup.util.AttributeCheck import AttributeCheck
+
+
 class ModelCompare:
-  def __init__(self) -> None:
-    self.threshold=None
-    self.modelFaceDBPathA=None
-    self.modelFaceDBPathB=None
-    self.outputCsvPath=None
-    self.cli=None
-    self.commandList=None
-    self.disk=None
-    self.enginePath=None
+    # TODO: add logging
 
-  def getThreshold(self):
-      return self.threshold        
+    def __init__(self) -> None:
+        self._threshold = None
+        self._modelFaceDBPathA = None
+        self._modelFaceDBPathB = None
+        self._outputCsvPath = None
+        self._cli = None
+        self._commandList = None
+        self._disk = None
+        self._enginePath = None
+        # init func
+        self._attributeCheck = None
 
-  def setThreshold(self,threshold):
-      self.threshold=threshold     
+    def getThreshold(self) -> float:
+        return self._threshold
 
+    def setThreshold(self, threshold: float):
+        self._threshold = threshold
 
-  def getModelFaceDBPathA(self):
-      return self.modelFaceDBPathA
+    def getModelFaceDBPathA(self) -> str:
+        return self._modelFaceDBPathA
 
-  def setModelFaceDBPathA(self,modelFaceDBPathA):
-      self.modelFaceDBPathA=modelFaceDBPathA     
+    def setModelFaceDBPathA(self, modelFaceDBPathA: str):
+        self._modelFaceDBPathA = modelFaceDBPathA
 
+    def getModelFaceDBPathB(self) -> str:
+        return self._modelFaceDBPathB
 
-  def getModelFaceDBPathB(self):
-      return self.modelFaceDBPathB
+    def setModelFaceDBPathB(self, modelFaceDBPathB: str):
+        self._modelFaceDBPathB = modelFaceDBPathB
 
-  def setModelFaceDBPathB(self,modelFaceDBPathB):
-      self.modelFaceDBPathB=modelFaceDBPathB
+    def getCli(self):
+        return self._cli
 
+    def setCli(self, cli):
+        self._cli = cli
 
-  def getOutputCsvPath(self):
-      return self.outputCsvPath
+    def getEnginePath(self):
+        return self._enginePath
 
-  def setOutputCsvPath(self,outputCsvPath):
-      self.outputCsvPath=outputCsvPath
+    def setEnginePath(self, enginePath):
+        self._enginePath = enginePath
 
+    def getCommandList(self):
+        if self._attributeCheck is None:
+            self._attributeCheck = AttributeCheck()
 
-  def getCli(self):
-      return self.cli
+        if self._attributeCheck.stringsNotNull(self._cli.toString()):
+            commandList = list()
+            commandList.append("cmd")
+            commandList.append("/C")
+            commandList.append(self._disk + ": && " + str(self._cli).replace("/", "/"))
+        return self._commandList
 
-  def setCli(self,cli):
-      self.cli=cli
+    def setCommandList(self, commandList):
+        self._commandList = commandList
 
+    def getOutputCsvPath(self):
+        return self._outputCsvPath
 
-  def getCommandList(self):
-      return self.commandList
+    def setOutputCsvPath(self, outputCsvPath):
+        self._outputCsvPath = outputCsvPath
 
-  def setCommandList(self,commandList):
-      self.commandList=commandList
+    def generateCli(self):
+        if self._attributeCheck is None:
+            self._attributeCheck = AttributeCheck()
 
-
-  def getEnginePath(self):
-      return self.enginePath
-
-  def setEnginePath(self,enginePath):
-      self.enginePath=enginePath
-
-
-public class ModelCompare {
-  private static Logger LOGGER = LoggerFactory.getLogger(CmdUtil.class);
-
-  private Double threshold;
-  private String modelFaceDBPathA;
-  private String modelFaceDBPathB;
-  private String outputCsvPath;
-  private StringBuilder cli;
-  private List<String> commandList;
-  private String disk;
-  private String enginePath;
-  // init func
-  private AttributeCheck attributeCheck;
-
-  public Double getThreshold() {
-    return threshold;
-  }
-
-  public void setThreshold(Double threshold) {
-    this.threshold = threshold;
-  }
-
-  public String getModelFaceDBPathA() {
-    return modelFaceDBPathA;
-  }
-
-  public void setModelFaceDBPathA(String modelFaceDBPathA) {
-    this.modelFaceDBPathA = modelFaceDBPathA;
-  }
-
-  public String getModelFaceDBPathB() {
-    return modelFaceDBPathB;
-  }
-
-  public void setModelFaceDBPathB(String modelFaceDBPathB) {
-    this.modelFaceDBPathB = modelFaceDBPathB;
-  }
-
-  public StringBuilder getCli() {
-    return cli;
-  }
-
-  public void setCli(StringBuilder cli) {
-    this.cli = cli;
-  }
-
-  public String getEnginePath() {
-    return enginePath;
-  }
-
-  public void setEnginePath(String enginePath) {
-    this.enginePath = enginePath;
-  }
-
-  public List<String> getCommandList() {
-    if (attributeCheck == null) {
-      attributeCheck = new AttributeCheck();
-    }
-    if (attributeCheck.stringsNotNull(cli.toString())) {
-      commandList = new ArrayList<String>();
-      commandList.add("cmd");
-      commandList.add("/C");
-      commandList.add(disk + ": && " + cli.toString().replace("/", "/"));
-    }
-    return commandList;
-  }
-
-  public void setCommandList(List<String> commandList) {
-    this.commandList = commandList;
-  }
-
-  public String getOutputCsvPath() {
-    return outputCsvPath;
-  }
-
-  public void setOutputCsvPath(String outputCsvPath) {
-    this.outputCsvPath = outputCsvPath;
-  }
-
-  public void generateCli() {
-    if (attributeCheck == null) {
-      attributeCheck = new AttributeCheck();
-    }
-    this.disk = enginePath.substring(0, 1);
-    if (attributeCheck.stringsNotNull(enginePath, disk)) {
-      cli = new StringBuilder("cd " + enginePath + " && " + disk + ": && ModelCompare " + threshold + " " + " \"" + modelFaceDBPathA + "\" \""
-          + modelFaceDBPathB + "\" \"" + outputCsvPath + "\"");
-    } else {
-      cli = null;
-    }
-    LOGGER.info("RecognizeFace cli : " + cli);
-  }
-}
+        self._disk = self._enginePath[0]
+        if self._attributeCheck.stringsNotNull(self._enginePath, self._disk):
+            self._cli = (
+                        "cd " + self._enginePath + " && " + self._disk + ": && ModelCompare " + self._threshold + " " + " \"" + self._modelFaceDBPathA + "\" \"" + self._modelFaceDBPathB + "\" \"" + self._outputCsvPath + "\"");
+        else:
+            self._cli = None
+        # TODO: add logging
+        # LOGGER.info("RecognizeFace cli : " + cli);

@@ -15,10 +15,10 @@ class ModelInsertResult:
 		self.modelInsertInfoList=modelInsertInfoList     
 		
 
-	def getIsSuccess(self):
+	def isSuccess(self):
 		return self.isSuccess        
 
-	def setIsSuccess(self,isSuccess):
+	def setSuccess(self,isSuccess):
 		self.isSuccess=isSuccess     
 		
 
