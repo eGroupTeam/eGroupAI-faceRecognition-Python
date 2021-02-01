@@ -1,4 +1,5 @@
 from egroup.util.AttributeCheck import AttributeCheck
+from egroup.util.LoggingUtil import LOGGER
 
 
 class ModelAppend:
@@ -56,8 +57,7 @@ class ModelAppend:
             self._cli = "cd " + enginePath + " && " + self._disk + ": && ModelAppend \"" + self._listPath + "\" \"" + self._trainedFaceDBPath + "\""
         else:
             self._cli = None
-
-        # TODO: LOGGER.info("cli=" + cli);
+        LOGGER.info(f"cli={self._cli}")
 
     def getTrainedFaceDBPath(self):
         return self._trainedFaceDBPath

@@ -6,12 +6,11 @@ import json
 
 from egroup.util.AttributeCheck import AttributeCheck
 from egroup.util.CopyUtil import CopyUtil
+from egroup.util.LoggingUtil import LOGGER
 from egroup.util.TxtUtil import TxtUtil
 
 
 class GetResultUtil:
-    # TODO: logging
-
     def allResult(self, jsonFolderPath: str, jsonName: str, startIndex: int, isDynamicJson: bool, waiteJsonMs: int):
         # init func
         copyUtil = CopyUtil()
@@ -35,9 +34,7 @@ class GetResultUtil:
             try:
                 copyUtil.copyFile(sourceJsonPath, jsonFileName)
             except Exception as e:
-                # TODO: logging
-                # LOGGER.error(gson.toJson(e.getMessage()))
-                print(e)
+                LOGGER.error(json.dumps(e))
             # If has data
             if attributeCheck.stringsNotNull(jsonContent):
                 # Get last one object
@@ -84,9 +81,7 @@ class GetResultUtil:
             try:
                 copyUtil.copyFile(sourceJsonPath, jsonFileName)
             except Exception as e:
-                # TODO: logging
-                # LOGGER.error(gson.toJson(e.getMessage()))
-                print(e)
+                LOGGER.error(json.dumps(e))
             # If has data
             if attributeCheck.stringsNotNull(jsonContent):
                 # Get last one object
@@ -133,9 +128,7 @@ class GetResultUtil:
             try:
                 copyUtil.copyFile(sourceJsonPath, jsonFileName)
             except Exception as e:
-                # TODO: logging
-                # LOGGER.error(gson.toJson(e.getMessage()))
-                print(e)
+                LOGGER.error(json.dumps(e))
             # If has data
             if attributeCheck.stringsNotNull(jsonContent):
                 # Get last one object
@@ -182,8 +175,7 @@ class GetResultUtil:
                 try:
                     copyUtil.copyFile(sourceJsonPath, jsonFileName)
                 except Exception as e:
-                    # TODO: logging
-                    print(e)
+                    LOGGER.error(json.dumps(e))
                 jsonContent = txtUtil.read_content(jsonFileName)
 
                 # If has data
@@ -217,9 +209,9 @@ class GetResultUtil:
 
                 if deleteJson:
                     try:
+                        # TODO: recheck
                         os.remove(sourceJson)
                     except Exception as e:
-                        # TODO: logger
-                        print(e)
+                        LOGGER.error(json.dumps(e))
 
         return faceList

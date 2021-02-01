@@ -18,10 +18,10 @@ class TrainResult:
         # init func
         self._attributeCheck = None
 
-    def isTrainResultFileExist(self) :
+    def isTrainResultFileExist(self):
         return self._trainResultFileExist
 
-    def setTrainResultFileExist(self,trainResultFileExist: bool):
+    def setTrainResultFileExist(self, trainResultFileExist: bool):
         self._trainResultFileExist = trainResultFileExist
 
     def getPassFacePathList(self):
@@ -33,7 +33,7 @@ class TrainResult:
 
         return self._passFacePathList
 
-    def setPassFacePathList(self,passFacePathList: list):
+    def setPassFacePathList(self, passFacePathList: list):
         self._passFacePathList = passFacePathList
 
     def getFailFacePathList(self):
@@ -44,32 +44,31 @@ class TrainResult:
             self._failFacePathList = list()
         return self._failFacePathList
 
-    def setFailFacePathList(self,failFacePathList: list):
+    def setFailFacePathList(self, failFacePathList: list):
         self._failFacePathList = failFacePathList
 
     def getFileSize(self):
         return self._fileSize
 
-    def setFileSize(self,fileSize: int):
+    def setFileSize(self, fileSize: int):
         self._fileSize = fileSize
 
     def getFaceSize(self):
         return self._faceSize
 
-    def setFaceSize(self,faceSize: int):
+    def setFaceSize(self, faceSize: int):
         self._faceSize = faceSize
 
     def getProcessingTime(self):
         return self._processingTime
 
-    def setProcessingTime(self,processingTime: str):
+    def setProcessingTime(self, processingTime: str):
         self._processingTime = processingTime
 
     def getAvgPprocessingSpped(self):
         return self._avgPprocessingSpped
 
-
-    def setAvgPprocessingSpped(self,avgPprocessingSpped: str):
+    def setAvgPprocessingSpped(self, avgPprocessingSpped: str):
         self._avgPprocessingSpped = avgPprocessingSpped
 
     def getTrainInfoList(self):
@@ -79,23 +78,23 @@ class TrainResult:
             self._trainInfoList = list()
         return self._trainInfoList
 
-    def setTrainInfoList(self,trainInfoList: list):
+    def setTrainInfoList(self, trainInfoList: list):
         self._trainInfoList = trainInfoList
 
     def isTrainCmdSuccess(self):
         return self._trainCmdSuccess
 
-    def setTrainCmdSuccess(self,trainCmdSuccess: bool):
+    def setTrainCmdSuccess(self, trainCmdSuccess: bool):
         self._trainCmdSuccess = trainCmdSuccess;
 
     def isTrainStatus(self):
         return self._trainStatus
 
-    def setTrainStatus(self,trainStatus: bool):
+    def setTrainStatus(self, trainStatus: bool):
         self._trainStatus = trainStatus
 
     def getTrainSize(self):
         return self._trainSize
 
-    def setTrainSize(self,trainSize: int):
+    def setTrainSize(self, trainSize: int):
         self._trainSize = trainSize

@@ -1,11 +1,11 @@
 from msgpack.fallback import USING_STRINGBUILDER
 
 from egroup.util.AttributeCheck import AttributeCheck
+from egroup.util.LoggingUtil import LOGGER
 from egroupai.engine.entity.TrainResult import TrainResult
 
 
 class TrainFace:
-    # TODO: add logger here
     def __init__(self):
         self._isModelExist = None
         self._trainListPath = None
@@ -56,7 +56,6 @@ class TrainFace:
     def setModelPath(self, modelPath: str):
         self._modelPath = modelPath
 
-    # TODO: StringBuilder
     def getCli(self) -> str:
         return self._cli
 
@@ -67,13 +66,12 @@ class TrainFace:
         self._disk = self._enginePath[0]
         if self._attributeCheck.stringsNotNull(self._enginePath, self._disk, self._trainListPath, self._modelPath):
             if self._isModelExist:
-                self._cli = f"cd {self._enginePath} && {self._disk}: && TrainFace {' --eGroupGGPass ' if self._isGGPass else ''} -- append \"{self._trainListPath}\" \"{self._modelPath}\""
+                self._cli = f"cd {self._enginePath} && {self._disk}: && TrainFace {' --eGroupGGPass ' if self._isGGPass else ''} --append \"{self._trainListPath}\" \"{self._modelPath}\""
             else:
                 self._cli = f"cd {self._enginePath} && {self._disk}: && TrainFace {' --eGroupGGPass ' if self._isGGPass else ''} \"{self._trainListPath}\" \"{self._modelPath}\""
         else:
             self._cli = None
-
-        # TODO: show Logger
+        LOGGER.info(f"cli={self._cli}")
 
     def getCommandList(self) -> list:
         if self._attributeCheck is None:

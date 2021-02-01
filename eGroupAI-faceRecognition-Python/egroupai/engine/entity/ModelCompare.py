@@ -1,11 +1,8 @@
-import logging
-
 from egroup.util.AttributeCheck import AttributeCheck
+from egroup.util.LoggingUtil import LOGGER
 
 
 class ModelCompare:
-    # TODO: add logging
-
     def __init__(self) -> None:
         self._threshold = None
         self._modelFaceDBPathA = None
@@ -78,5 +75,4 @@ class ModelCompare:
                         "cd " + self._enginePath + " && " + self._disk + ": && ModelCompare " + self._threshold + " " + " \"" + self._modelFaceDBPathA + "\" \"" + self._modelFaceDBPathB + "\" \"" + self._outputCsvPath + "\"");
         else:
             self._cli = None
-        # TODO: add logging
-        # LOGGER.info("RecognizeFace cli : " + cli);
+        LOGGER.info(f"RecognizeFace cli : {self._cli}")

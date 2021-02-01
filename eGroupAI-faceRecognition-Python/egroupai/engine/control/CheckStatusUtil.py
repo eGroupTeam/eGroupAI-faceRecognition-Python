@@ -1,8 +1,10 @@
+import json
 import os.path as osp
 from enum import Enum
 from time import time, sleep
 
 from egroup.util.AttributeCheck import AttributeCheck
+from egroup.util.LoggingUtil import LOGGER
 from egroup.util.TxtUtil import TxtUtil, Charsets
 from egroupai.engine.entity.ModelAppendInfo import ModelAppendInfo
 from egroupai.engine.entity.ModelAppendResult import ModelAppendResult
@@ -30,7 +32,6 @@ class Check(Enum):
 
 
 class CheckStatusUtil:
-    # TODO: add logger
 
     @staticmethod
     def recognizeServerStartup4(enginePath: str, modelPath: str, startupStatusPath: str, waitTimeMs: int,
@@ -76,16 +77,15 @@ class CheckStatusUtil:
                         break
                     sleep(0.2)
             except InterruptedError as e:
-                # TODO: logging error
+                LOGGER.error(json.dumps(e))
                 # TODO: interrupt the thread
-                print(e)
 
             if osp.exists(startupStatusPath) and len(startupStatusPath) > 0:
                 startupStatusLineList = txtUtil.read_lineList(startupStatusPath, Charsets.BIG5)
                 if attributeCheck.listNotEmpty(startupStatusLineList):
                     for startupStatusLine in startupStatusLineList:
                         if checkFlag:
-                            # TODO: add logging
+                            LOGGER.info(f"checkCount={checkCount},startupStatusLine={startupStatusLine}")
                             # init variable
                             startupStatus = StartupStatus()
                             startupStatusArray = startupStatusLine.split("\\t")
@@ -226,9 +226,8 @@ class CheckStatusUtil:
                             break
                         sleep(0.2)
                 except InterruptedError as e:
-                    # TODO: logging error
+                    LOGGER.error(json.dumps(e))
                     # TODO: interrupt thread
-                    print(e)
 
                 if osp.exists(startupStatusPath) and osp.getsize(startupStatusPath) > 0:
                     startupStatusLineList = txtUtil.read_lineList(startupStatusPath, Charsets.BIG5)
@@ -354,11 +353,10 @@ class CheckStatusUtil:
                     if osp.exists(trainResultPath) and osp.getsize(trainResultPath) > 0:
                         break
                     sleep(0.25)
-                    # TODO: logging
+                    LOGGER.info("訓練進行中，請稍等......")
             except InterruptedError as e:
-                # TODO: logging
+                LOGGER.error(json.dumps(e))
                 # TODO: interrupt thread
-                print(e)
 
             trainResultLineList = txtUtil.read_lineList(trainResultPath, Charsets.BIG5)
             if attributeCheck.listNotEmpty(trainResultLineList):
@@ -426,9 +424,8 @@ class CheckStatusUtil:
                     waitCount += 1
                     sleep(waitTimeMs / 5 / 1000)
             except InterruptedError as e:
-                # TODO: logging error
+                LOGGER.error(json.dumps(e))
                 # TODO: interrupt thread
-                print(e)
 
             # Get the model append log
             if osp.exists(modelAppendPath) and osp.getsize(modelAppendPath) > 0:
@@ -509,9 +506,8 @@ class CheckStatusUtil:
                     waitCount += 1
                     sleep(0.2)
             except InterruptedError as e:
-                # TODO: logging error
+                LOGGER.error(json.dumps(e))
                 # TODO: interrupt thread
-                print(e)
 
             if osp.exists(modelSwitchStatusPath) and osp.getsize(modelSwitchStatusPath) > 0:
                 modelSwitchResult = ModelSwitchResult()
@@ -555,9 +551,8 @@ class CheckStatusUtil:
                     waitCount += 1
                     sleep(waitTimeMs / 5 / 1000)
             except InterruptedError as e:
-                # TODO: Logging
+                LOGGER.error(json.dumps(e))
                 # TODO: interrupt thread
-                print(e)
 
             if osp.exists(modelInsertStatusPath) and osp.getsize(modelInsertStatusPath) > 0:
                 modelInsertResult = ModelInsertResult()

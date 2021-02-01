@@ -1,3 +1,5 @@
+import json
+import logging
 import os
 import os.path as osp
 import threading
@@ -7,11 +9,11 @@ from egroup.util.FolderUtil import FolderUtil
 from egroupai.engine.control.CreateEngineFileUtil import CreateEngineFileUtil
 from egroupai.engine.control.EngineUtil import EngineUtil
 from egroupai.engine.control.GetResultUtil import GetResultUtil
-# TODO: add logging
 from egroupai.engine.entity.ModelAppend import ModelAppend
 from egroupai.engine.entity.ModelInsert import ModelInsert
 from egroupai.engine.entity.RecognizeFace import RecognizeFace
 from egroupai.engine.entity.TrainFace import TrainFace
+from egroup.util.LoggingUtil import LOGGER
 
 
 # init func
@@ -102,7 +104,9 @@ def training(name: str):
     createEngineFileUtil.createTrainFaceTxt(str(trainListPath), trainFaceList)
     # Start training and get result
     trainResult = engineUtil.trainFace(trainFace, logDeleteFlag)
-    # LOGGER.info("trainResult=" + new Gson().toJson(trainResult))
+    LOGGER.info(f"trainResult=abcdxyz")
+    # logging.info(f"trainResult={json.dumps(trainResult)}")
+    # TODO: LOGGER.info("trainResult=" + new Gson().toJson(trainResult))
 
 
 def recognition(usedFaceDB: str):
@@ -126,6 +130,7 @@ def recognition(usedFaceDB: str):
     engineUtil.recognizeFaceSingle(recognizeFace)
     # Get all result after recognize is done
     faceList = getResultUtil.cacheResult(str(jsonFolderPath), str(catchJsonName))
+    logging.info(f"Faces : {json.dumps(faceList)}")
     # TODO: logging
 
 
@@ -139,6 +144,8 @@ def modelInsert(name: str):
     modelInsertVar.setFaceDBList(faceDBList)
     modelInsertVar.setListPath(str(modelInserFilePath))
     modelInsertResult = engineUtil.modelInsert(modelInsertVar, False, 3000)
+    logging.info(f"modelInsertResult : adbxcjlkfas")
+    # logging.info(f"modelInsertResult : {json.dumps(modelInsertResult)}")
     # TODO: logging
 
 
@@ -156,6 +163,8 @@ def modelAppend():
     modelAppendVar.setListPath(str(modelAppendListPath))
     modelAppendVar.setEnginePath(str(enginePath))
     modelAppendResult = engineUtil.modelAppend(modelAppendVar, False, 2500)
+    logging.info(f"modelInsertResult : json.dumps(modelAppendResult)")
+    # logging.info(f"modelInsertResult : {json.dumps(modelAppendResult)}")
     # TODO: logging
 
 
@@ -181,10 +190,7 @@ def main():
     # ==================================================Step2 : Recognition=============================================
     # // Example: Input jerry Face, Recognized with jerry’s Face Model and get Result（JSON）.
     # // Document: https://reurl.cc/Y6r9Ya
-
-    # recognition(jerryFaceDBPath + ".faceDB")
-
-    # @synchronized
+    @synchronized
     def runRecognition():
         recognition(jerryFaceDBPath + ".faceDB")
     recognitionThread = Thread(target=runRecognition)
@@ -197,6 +203,10 @@ def main():
     modelInsert("leonard")
     # ================================================wait recognition thread done======================================
 
+    # try:
+    #     threading.Condition().wait()
+    # except Exception as e:
+    #     print(e)
     # TODO: synchronized (recognitionThread) {
     #       try {
     #         recognitionThread.wait();

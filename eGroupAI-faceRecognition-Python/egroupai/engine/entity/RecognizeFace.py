@@ -1,6 +1,7 @@
 from enum import Enum
 
 from egroup.util.AttributeCheck import AttributeCheck
+from egroup.util.LoggingUtil import LOGGER
 
 
 class RECOGNIZEMODE_(Enum):
@@ -143,15 +144,19 @@ class RecognizeFace:
                 inputSource = f" --video {self._videoPath}"
             elif self._attributeCheck.stringsNotNull(self._photoListPath):
                 inputSource = f" --photo-list {self._photoListPath}"
-            outFrame = '' if self._isOutputFrame == False or not self._attributeCheck.stringsNotNull(self._outputFramePath) else ' --output-frame \"' + str(self._outputFramePath) + '\" '
-            outFace = '' if self._isOutputFace == False or not self._attributeCheck.stringsNotNull(self._outputFacePath) else ' --output-face \"' + str(self._outputFacePath) + '\" '
-            facePath = '' if not self._attributeCheck.stringsNotNull(self._outputFacePath) else '--output-face \"' + str(self._outputFacePath) + '\" '
+            outFrame = ''
+            outFace = ''
+            facePath = ''
+            if self._isOutputFrame and self._attributeCheck.stringsNotNull(self._outputFramePath):
+                outFrame = f" --output-frame \"{self._outputFramePath}\" "
+            if self._isOutputFace and self._attributeCheck.stringsNotNull(self._outputFacePath):
+                outFace = f" --output-face \"{self._outputFacePath}\" "
+
             self._cli = f"cd {self._enginePath} && {self._disk}: && RecognizeFace --threshold {self._threshold} " \
                   f"{' --show-main-window ' if not self._isHideMainWindow else ''} {' --show-thread-window ' if not self._isHideThreadWindow else ''}" \
                   f"{' --resolution ' + str(self._resolution) + ' ' if self._attributeCheck.stringsNotNull(self._resolution) else '--resolution 720p '}" \
                   f"{outFrame}" \
                   f"{outFace}" \
-                  f"{facePath}" \
                   f"{inputSource} {'--minimum-face-size ' + str(self._minimumFaceSize) + ' ' if self._minimumFaceSize is not None else ''}" \
                   f"{'--output-window-resolution ' + str(self._mainResolution) + ' ' if self._attributeCheck.stringsNotNull(self._mainResolution) else ''}" \
                   f"{'--threads ' + str(self._threads) + ' ' if self._threads is not None else '--threads 1 '}" \
@@ -160,8 +165,7 @@ class RecognizeFace:
                   f"{'--one-face' if self._isOnface else ''} \"{self._trainedFaceDBPath}\" \"{self._jsonPath}\""
         else:
             self._cli = None
-
-        # TODO: logging
+        LOGGER.info(f"RecognizeFace cli : {self._cli}")
 
     def getStopCli(self, recognizeMode_: RECOGNIZEMODE_):
         if self._attributeCheck is None:
@@ -174,7 +178,7 @@ class RecognizeFace:
                 self._cli = f"cd {self._enginePath} && {self._disk}: && StopLiveness.bat"
         else:
             self._cli = None
-        # TODO: logging
+        LOGGER.info(f"RecognizeFace cli : {self._cli}")
 
     def getCommandList(self) -> list:
         if self._attributeCheck is None:
