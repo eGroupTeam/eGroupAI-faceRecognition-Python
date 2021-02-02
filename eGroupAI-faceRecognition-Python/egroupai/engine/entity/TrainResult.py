@@ -18,6 +18,21 @@ class TrainResult:
         # init func
         self._attributeCheck = None
 
+    def to_dict(self):
+        return {
+            "passFacePathList": self.getPassFacePathList(),
+            "failFacePathList": self.getFailFacePathList(),
+            "fileSize": self.getFileSize(),
+            "faceSize": self.getFaceSize(),
+            "processingTime": self.getProcessingTime(),
+            "avgPprocessingSpped": self.getAvgPprocessingSpped(),
+            "trainInfoList": [train_info.to_dict() for train_info in self.getTrainInfoList()],
+            "trainResultFileExist": self.isTrainResultFileExist(),
+            "trainCmdSuccess": self.isTrainCmdSuccess(),
+            "trainStatus": self.isTrainStatus(),
+            "trainSize": self.getTrainSize(),
+        }
+
     def isTrainResultFileExist(self):
         return self._trainResultFileExist
 
@@ -71,7 +86,7 @@ class TrainResult:
     def setAvgPprocessingSpped(self, avgPprocessingSpped: str):
         self._avgPprocessingSpped = avgPprocessingSpped
 
-    def getTrainInfoList(self):
+    def getTrainInfoList(self) -> list:
         if self._attributeCheck is None:
             self._attributeCheck = AttributeCheck()
         if not self._attributeCheck.listNotEmpty(self._trainInfoList):
@@ -81,19 +96,19 @@ class TrainResult:
     def setTrainInfoList(self, trainInfoList: list):
         self._trainInfoList = trainInfoList
 
-    def isTrainCmdSuccess(self):
+    def isTrainCmdSuccess(self) -> bool:
         return self._trainCmdSuccess
 
     def setTrainCmdSuccess(self, trainCmdSuccess: bool):
-        self._trainCmdSuccess = trainCmdSuccess;
+        self._trainCmdSuccess = trainCmdSuccess
 
-    def isTrainStatus(self):
+    def isTrainStatus(self) -> bool:
         return self._trainStatus
 
     def setTrainStatus(self, trainStatus: bool):
         self._trainStatus = trainStatus
 
-    def getTrainSize(self):
+    def getTrainSize(self) -> int:
         return self._trainSize
 
     def setTrainSize(self, trainSize: int):

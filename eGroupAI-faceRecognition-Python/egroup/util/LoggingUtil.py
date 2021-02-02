@@ -6,7 +6,7 @@ from datetime import date
 LOG_HOME = "C:/logs"
 APP_NAME = "FacePass"
 
-LOGGER_FORMATTER = logging.Formatter(fmt="%(asctime)s %(levelname)s %(filename)s %(message)s",
+LOGGER_FORMATTER = logging.Formatter(fmt="%(asctime)s %(levelname)s %(filename)s - %(message)s",
                                      datefmt="%Y-%m-%d %H:%M:%S,%z")
 
 # config logging file

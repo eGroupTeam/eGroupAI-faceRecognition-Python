@@ -17,6 +17,9 @@ from egroup.util.LoggingUtil import LOGGER
 
 
 # init func
+from egroupai.engine.entityEncoder.ModelInsertResultEncoder import ModelInsertResultEncoder
+from egroupai.engine.entityEncoder.TrainResultEncoder import TrainResultEncoder
+
 engineUtil = EngineUtil()
 createEngineFileUtil = CreateEngineFileUtil()
 folderUtil = FolderUtil()
@@ -104,8 +107,7 @@ def training(name: str):
     createEngineFileUtil.createTrainFaceTxt(str(trainListPath), trainFaceList)
     # Start training and get result
     trainResult = engineUtil.trainFace(trainFace, logDeleteFlag)
-    LOGGER.info(f"trainResult=abcdxyz")
-    # logging.info(f"trainResult={json.dumps(trainResult)}")
+    LOGGER.info(f"trainResult={json.dumps(trainResult, cls=TrainResultEncoder)}")
     # TODO: LOGGER.info("trainResult=" + new Gson().toJson(trainResult))
 
 
@@ -130,7 +132,7 @@ def recognition(usedFaceDB: str):
     engineUtil.recognizeFaceSingle(recognizeFace)
     # Get all result after recognize is done
     faceList = getResultUtil.cacheResult(str(jsonFolderPath), str(catchJsonName))
-    logging.info(f"Faces : {json.dumps(faceList)}")
+    LOGGER.info(f"Faces : {json.dumps(faceList)}")
     # TODO: logging
 
 
@@ -144,8 +146,8 @@ def modelInsert(name: str):
     modelInsertVar.setFaceDBList(faceDBList)
     modelInsertVar.setListPath(str(modelInserFilePath))
     modelInsertResult = engineUtil.modelInsert(modelInsertVar, False, 3000)
-    logging.info(f"modelInsertResult : adbxcjlkfas")
-    # logging.info(f"modelInsertResult : {json.dumps(modelInsertResult)}")
+    # logging.info(f"modelInsertResult : adbxcjlkfas")
+    LOGGER.info(f"modelInsertResult : {json.dumps(modelInsertResult, cls=ModelInsertResultEncoder)}")
     # TODO: logging
 
 
@@ -163,7 +165,7 @@ def modelAppend():
     modelAppendVar.setListPath(str(modelAppendListPath))
     modelAppendVar.setEnginePath(str(enginePath))
     modelAppendResult = engineUtil.modelAppend(modelAppendVar, False, 2500)
-    logging.info(f"modelInsertResult : json.dumps(modelAppendResult)")
+    LOGGER.info(f"modelInsertResult : {json.dumps(modelAppendResult.__dict__)}")
     # logging.info(f"modelInsertResult : {json.dumps(modelAppendResult)}")
     # TODO: logging
 
@@ -190,6 +192,7 @@ def main():
     # ==================================================Step2 : Recognition=============================================
     # // Example: Input jerry Face, Recognized with jerry’s Face Model and get Result（JSON）.
     # // Document: https://reurl.cc/Y6r9Ya
+
     @synchronized
     def runRecognition():
         recognition(jerryFaceDBPath + ".faceDB")

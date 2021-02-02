@@ -88,7 +88,7 @@ class CheckStatusUtil:
                             LOGGER.info(f"checkCount={checkCount},startupStatusLine={startupStatusLine}")
                             # init variable
                             startupStatus = StartupStatus()
-                            startupStatusArray = startupStatusLine.split("\\t")
+                            startupStatusArray = startupStatusLine.split("\t")
                             if len(startupStatusArray) == 3:
                                 if checkCount == 0:
                                     if startupStatusArray[0] == "Check0":
@@ -236,7 +236,7 @@ class CheckStatusUtil:
                             if checkFlag:
                                 # init variable
                                 startupStatus = StartupStatus()
-                                startupStatusArray = startupStatusLine.split("\\t")
+                                startupStatusArray = startupStatusLine.split("\t")
                                 if len(startupStatusArray) == 3:
                                     if checkCount == 0:
                                         if startupStatusArray[0] == "Check0":
@@ -364,7 +364,7 @@ class CheckStatusUtil:
                 trainInfoList = list()
                 trainInfo = TrainInfo()
                 for trainResultLine in trainResultLineList:
-                    trainArray = trainResultLine.split("\\t")
+                    trainArray = trainResultLine.split("\t")
                     if len(trainArray) == 9:
                         if trainArray[1] == "Pass":
                             trainResult.getPassFacePathList().append(trainArray[2])
@@ -437,7 +437,7 @@ class CheckStatusUtil:
                     modelAppendInfo = ModelAppendInfo()
                     for modelAppendLine in modelAppendLineList:
                         # init variable
-                        modelAppendArray = modelAppendLine.split("\\t")
+                        modelAppendArray = modelAppendLine.split("\t")
                         if len(modelAppendArray) == 5:
                             if "DBSize" in modelAppendArray[2]:
                                 modelAppendInfo.setDBSizeCheckStatus(modelAppendArray[1])
@@ -472,7 +472,7 @@ class CheckStatusUtil:
                                                                       modelAppendArray[3].find("GB") + 3:
                                                                       modelAppendArray[3].rfind("(")].strip())
                         elif len(modelAppendArray) == 1:
-                            if modelAppendArray[0].startsWith("Total faces: "):
+                            if modelAppendArray[0].startswith("Total faces: "):
                                 modelAppendResult.setTotalFaceCount(int(modelAppendArray[0][
                                                                         modelAppendArray[0].find("Total faces: ") + 12:
                                                                         modelAppendArray[0].find(
@@ -515,7 +515,7 @@ class CheckStatusUtil:
                 faceDBPath = ""
                 if attributeCheck.listNotEmpty(modelSwitchLineList):
                     for modelSwitchLine in modelSwitchLineList:
-                        modelSwitchArray = modelSwitchLine.split("\\t")
+                        modelSwitchArray = modelSwitchLine.split("\t")
                         if len(modelSwitchArray) > 1:
                             if modelSwitchArray[1] == "Fail":
                                 faceDBPath = modelSwitchArray[3].replace("Reload FaceDB file ", "")
@@ -525,7 +525,7 @@ class CheckStatusUtil:
                                 faceDBPath = modelSwitchArray[3].replace("Reload FaceDB file ", "")
                                 modelSwitchResult.setFaceDB(faceDBPath[faceDBPath.rfind("\\") + 1: len(faceDBPath)])
                             elif modelSwitchArray[1] == "Report":
-                                if modelSwitchArray[3].startsWith("Overall reload:"):
+                                if modelSwitchArray[3].startswith("Overall reload:"):
                                     modelSwitchResult.setFaceReload(modelSwitchArray[3])
                                 else:
                                     modelSwitchResult.setReloadTime(modelSwitchArray[3])
@@ -570,7 +570,7 @@ class CheckStatusUtil:
                     for modelInsertLine in modelInsertLineList:
                         # init variable
                         modelInsertInfo = ModelInsertInfo()
-                        modelInsertArray = modelInsertLine.split("\\t")
+                        modelInsertArray = modelInsertLine.split("\t")
                         if len(modelInsertArray) == 3:
                             if modelInsertArray[1] == "Pass":
                                 modelInsertInfoList.append(modelInsertInfo)
@@ -593,7 +593,7 @@ class CheckStatusUtil:
                             modelInsertInfoList.append(modelInsertInfo)
                             modelInsertResult.setSuccess(True)
                         elif len(modelInsertArray) == 4:
-                            if modelInsertArray[3].startsWith("Overall insert time: "):
+                            if modelInsertArray[3].startswith("Overall insert time: "):
                                 modelInsertInfo.setInsertProcessTime(modelInsertArray[3][
                                                                      modelInsertArray[3].find("Overall insert time: "):
                                                                      modelInsertArray[3].find(" sec. ")].strip())

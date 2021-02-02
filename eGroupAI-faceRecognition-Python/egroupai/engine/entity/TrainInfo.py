@@ -1,72 +1,78 @@
 class TrainInfo:
-	def __init__(self) -> None:
-		self._time = None
-		self._status = None
-		self._facePath = None
-		self._personId = None
-		self._isFaceQuality = False
-		self._isFaceQualityBlurness = False
-		self._isFaceQualityLowLuminance = False
-		self._isFaceQualityHighLuminance = False
-		self._isFaceQualityHeadpose = False
+    def __init__(self) -> None:
+        self._time = None
+        self._status = None
+        self._facePath = None
+        self._personId = None
+        self._isFaceQuality = False
+        self._isFaceQualityBlurness = False
+        self._isFaceQualityLowLuminance = False
+        self._isFaceQualityHighLuminance = False
+        self._isFaceQualityHeadpose = False
 
-	def getTime(self) -> str:
-		return self._time
+    def to_dict(self):
+        return {
+            "time": self.getTime(),
+            "status": self.getStatus(),
+            "facePath": self.getFacePath(),
+            "personId": self.getPersonId(),
+            "isFaceQuality": self.isFaceQuality(),
+            "isFaceQualityBlurness": self.isFaceQualityBlurness(),
+            "isFaceQualityLowLuminance": self.isFaceQualityLowLuminance(),
+            "isFaceQualityHighLuminance": self.isFaceQualityHighLuminance(),
+            "isFaceQualityHeadpose": self.isFaceQualityHeadpose(),
+        }
 
-	def setTime(self,time: str):
-		self._time = time
+    def getTime(self) -> str:
+        return self._time
 
-	def getStatus(self) -> str:
-		return self._status
+    def setTime(self, time: str):
+        self._time = time
 
-	def setStatus(self,status: str):
-		self._status=status
+    def getStatus(self) -> str:
+        return self._status
 
+    def setStatus(self, status: str):
+        self._status = status
 
-	def getFacePath(self) -> str:
-		return self._facePath
+    def getFacePath(self) -> str:
+        return self._facePath
 
-	def setFacePath(self,facePath: str):
-		self._facePath=facePath
+    def setFacePath(self, facePath: str):
+        self._facePath = facePath
 
+    def getPersonId(self) -> str:
+        return self._personId
 
-	def getPersonId(self) -> str:
-		return self._personId
+    def setPersonId(self, personId: str):
+        self._personId = personId
 
-	def setPersonId(self,personId: str):
-		self._personId=personId
+    def isFaceQuality(self) -> bool:
+        return self._isFaceQuality
 
+    def setFaceQuality(self, isFaceQuality: bool):
+        self._isFaceQuality = isFaceQuality
 
-	def isFaceQuality (self) -> bool:
-		return self._isFaceQuality
+    def isFaceQualityBlurness(self) -> bool:
+        return self._isFaceQualityBlurness
 
-	def setFaceQuality (self,isFaceQuality: bool ):
-		self._isFaceQuality =isFaceQuality
+    def setFaceQualityBlurness(self, isFaceQualityBlurness: bool):
+        self._isFaceQualityBlurness = isFaceQualityBlurness
 
+    def isFaceQualityLowLuminance(self) -> bool:
+        return self._isFaceQualityLowLuminance
 
-	def isFaceQualityBlurness(self) -> bool:
-		return self._isFaceQualityBlurness
+    def setIsFaceQualityLowLuminance(self, isFaceQualityLowLuminance: bool):
+        self._isFaceQualityLowLuminance = isFaceQualityLowLuminance
 
-	def setFaceQualityBlurness(self,isFaceQualityBlurness: bool):
-		self._isFaceQualityBlurness=isFaceQualityBlurness
+    def isFaceQualityHighLuminance(self) -> bool:
+        return self._isFaceQualityHighLuminance
 
+    def setIsFaceQualityHighLuminance(self, isFaceQualityHighLuminance: bool):
+        self._isFaceQualityHighLuminance = isFaceQualityHighLuminance
 
-	def isFaceQualityLowLuminance(self) -> bool:
-		return self._isFaceQualityLowLuminance
+    def isFaceQualityHeadpose(self) -> bool:
+        return self._isFaceQualityHeadpose
 
-	def setIsFaceQualityLowLuminance(self,isFaceQualityLowLuminance: bool):
-		self._isFaceQualityLowLuminance=isFaceQualityLowLuminance
-
-
-	def isFaceQualityHighLuminance(self) -> bool:
-		return self._isFaceQualityHighLuminance
-
-	def setIsFaceQualityHighLuminance(self,isFaceQualityHighLuminance: bool):
-		self._isFaceQualityHighLuminance=isFaceQualityHighLuminance
-
-
-	def isFaceQualityHeadpose(self) -> bool:
-		return self._isFaceQualityHeadpose
-
-	def setIsFaceQualityHeadpose(self,isFaceQualityHeadpose: bool):
-		self._isFaceQualityHeadpose=isFaceQualityHeadpose
+    def setIsFaceQualityHeadpose(self, isFaceQualityHeadpose: bool):
+        self._isFaceQualityHeadpose = isFaceQualityHeadpose

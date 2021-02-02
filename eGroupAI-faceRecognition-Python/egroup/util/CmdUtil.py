@@ -1,5 +1,7 @@
 import subprocess
 import os
+
+from egroup.util.AttributeCheck import AttributeCheck
 from egroup.util.LoggingUtil import LOGGER
 
 
@@ -9,11 +11,14 @@ class CmdUtil:
 
     @staticmethod
     def cmdProcessBuilder(commandList: list) -> bool:
+        attributeCheck = AttributeCheck()
         process = subprocess.Popen(commandList[-1], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                                   universal_newlines=True, shell=True, errors="ignore")
+                                   universal_newlines=True, shell=True, errors="ignore", encoding="Big5")
         while process.poll() is None:
-            line = process.stdout.readline()
-            LOGGER.info(line.strip())
+            line = process.stdout.readline().strip()
+            if not attributeCheck.stringsNotNull(line):
+                continue
+            LOGGER.info(line)
         if process.returncode < 0:
             return False
         return True
