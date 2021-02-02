@@ -5,8 +5,8 @@ from egroup.util.LoggingUtil import LOGGER
 
 
 class RECOGNIZEMODE_(Enum):
-    LIVENESS="liveness"
-    GENERAL="general"
+    LIVENESS = "liveness"
+    GENERAL = "general"
 
 
 class RecognizeFace:
@@ -45,7 +45,8 @@ class RecognizeFace:
 
     def getThreshold(self) -> float:
         return self._threshold
-    def setThreshold(self,threshold: float):
+
+    def setThreshold(self, threshold: float):
         self._threshold = threshold
 
     def isHideMainWindow(self) -> bool:
@@ -144,25 +145,32 @@ class RecognizeFace:
                 inputSource = f" --video {self._videoPath}"
             elif self._attributeCheck.stringsNotNull(self._photoListPath):
                 inputSource = f" --photo-list {self._photoListPath}"
-            outFrame = ''
-            outFace = ''
-            facePath = ''
-            if self._isOutputFrame and self._attributeCheck.stringsNotNull(self._outputFramePath):
-                outFrame = f" --output-frame \"{self._outputFramePath}\" "
-            if self._isOutputFace and self._attributeCheck.stringsNotNull(self._outputFacePath):
-                outFace = f" --output-face \"{self._outputFacePath}\" "
 
-            self._cli = f"cd {self._enginePath} && {self._disk}: && RecognizeFace --threshold {self._threshold} " \
-                  f"{' --show-main-window ' if not self._isHideMainWindow else ''} {' --show-thread-window ' if not self._isHideThreadWindow else ''}" \
-                  f"{' --resolution ' + str(self._resolution) + ' ' if self._attributeCheck.stringsNotNull(self._resolution) else '--resolution 720p '}" \
-                  f"{outFrame}" \
-                  f"{outFace}" \
-                  f"{inputSource} {'--minimum-face-size ' + str(self._minimumFaceSize) + ' ' if self._minimumFaceSize is not None else ''}" \
-                  f"{'--output-window-resolution ' + str(self._mainResolution) + ' ' if self._attributeCheck.stringsNotNull(self._mainResolution) else ''}" \
-                  f"{'--threads ' + str(self._threads) + ' ' if self._threads is not None else '--threads 1 '}" \
-                  f"{'--sample-rate ' + str(self._sampleRate) + ' ' if self._sampleRate is not None else '--sample-rate 5 '}" \
-                  f"{'--no-imageqa ' if self._isTesting else ''}{'--enable-iteration-search ' if self._isIterationSearch else ''}" \
-                  f"{'--one-face' if self._isOnface else ''} \"{self._trainedFaceDBPath}\" \"{self._jsonPath}\""
+            self._cli = f"cd {self._enginePath} && {self._disk}: && RecognizeFace --threshold {self._threshold} "
+            if not self._isHideMainWindow:
+                self._cli += ' --show-main-window'
+            if not self._isHideThreadWindow:
+                self._cli += ' --show-thread-window'
+            self._cli += f' --resolution {self._resolution} ' if self._attributeCheck.stringsNotNull(
+                self._resolution) else ' --resolution 720p '
+            if self._isOutputFrame and self._attributeCheck.stringsNotNull(self._outputFramePath):
+                self._cli += f" --output-frame \"{self._outputFramePath}\" "
+            if self._isOutputFace and self._attributeCheck.stringsNotNull(self._outputFacePath):
+                self._cli += f" --output-face \"{self._outputFacePath}\" "
+            self._cli += inputSource
+            if self._minimumFaceSize is not None:
+                self._cli += f' --minimum-face-size {self._minimumFaceSize} '
+            if self._attributeCheck.stringsNotNull(self._mainResolution):
+                self._cli += f' --output-window-resolution {self._mainResolution} '
+            self._cli += f' --threads {self._threads} ' if self._threads is not None else ' --threads 1 '
+            self._cli += f' --sample-rate {self._sampleRate} ' if self._sampleRate is not None else ' --sample-rate 5 '
+            if self._isTesting:
+                self._cli += ' --no-imageqa '
+            if self._isIterationSearch:
+                self._cli += ' --enable-iteration-search '
+            self._cli += f"\"{self._trainedFaceDBPath}\" \"{self._jsonPath}\""
+            # if self._isOnface:
+            #     self._cli += '--one-face'
         else:
             self._cli = None
         LOGGER.info(f"RecognizeFace cli : {self._cli}")

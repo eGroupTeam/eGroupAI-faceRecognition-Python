@@ -46,7 +46,7 @@ class CheckStatusUtil:
         if attributeCheck.stringsNotNull(enginePath, modelPath):
             # init variable
             licenseKeyPath = f"{enginePath}\\license.key"
-            if recognizeMode_.value() == RECOGNIZEMODE_.LIVENESS:
+            if recognizeMode_.value == RECOGNIZEMODE_.LIVENESS:
                 recognizeExePath = f"{enginePath}\\LivenessDetectionServer.exe"
             else:
                 recognizeExePath = f"{enginePath}\\RecognizeFace.exe"
@@ -78,7 +78,6 @@ class CheckStatusUtil:
                     sleep(0.2)
             except InterruptedError as e:
                 LOGGER.error(json.dumps(e))
-                # TODO: interrupt the thread
 
             if osp.exists(startupStatusPath) and len(startupStatusPath) > 0:
                 startupStatusLineList = txtUtil.read_lineList(startupStatusPath, Charsets.BIG5)
@@ -227,7 +226,6 @@ class CheckStatusUtil:
                         sleep(0.2)
                 except InterruptedError as e:
                     LOGGER.error(json.dumps(e))
-                    # TODO: interrupt thread
 
                 if osp.exists(startupStatusPath) and osp.getsize(startupStatusPath) > 0:
                     startupStatusLineList = txtUtil.read_lineList(startupStatusPath, Charsets.BIG5)
@@ -356,15 +354,14 @@ class CheckStatusUtil:
                     LOGGER.info("訓練進行中，請稍等......")
             except InterruptedError as e:
                 LOGGER.error(json.dumps(e))
-                # TODO: interrupt thread
 
             trainResultLineList = txtUtil.read_lineList(trainResultPath, Charsets.BIG5)
             if attributeCheck.listNotEmpty(trainResultLineList):
                 # init variable
                 trainInfoList = list()
-                trainInfo = TrainInfo()
                 for trainResultLine in trainResultLineList:
                     trainArray = trainResultLine.split("\t")
+                    trainInfo = TrainInfo()
                     if len(trainArray) == 9:
                         if trainArray[1] == "Pass":
                             trainResult.getPassFacePathList().append(trainArray[2])
@@ -376,9 +373,9 @@ class CheckStatusUtil:
                         trainInfo.setPersonId(trainArray[3])
                         trainInfo.setFaceQuality("pass" in trainArray[4].lower())
                         trainInfo.setFaceQualityBlurness("pass" in trainArray[5].lower())
-                        trainInfo.setIsFaceQualityLowLuminance("pass" in trainArray[6])
-                        trainInfo.setIsFaceQualityHighLuminance("pass" in trainArray[7])
-                        trainInfo.setIsFaceQualityHeadpose("pass" in trainArray[8])
+                        trainInfo.setIsFaceQualityLowLuminance("pass" in trainArray[6].lower())
+                        trainInfo.setIsFaceQualityHighLuminance("pass" in trainArray[7].lower())
+                        trainInfo.setIsFaceQualityHeadpose("pass" in trainArray[8].lower())
                         trainInfoList.append(trainInfo)
                     elif len(trainArray) == 5:
                         if trainArray[1] == "Fail":
@@ -391,12 +388,12 @@ class CheckStatusUtil:
                     elif len(trainArray) == 2:
                         if trainArray[1] == "faces were trained in the list file":
                             trainResult.setFaceSize(int(trainArray[0].replace(":", "")))
-                        elif trainArray == "list file size":
+                        elif trainArray[1] == "list file size":
                             trainResult.setFileSize(int(trainArray[0].replace(":", "")))
                     elif len(trainArray) == 1:
                         if trainArray[0].startswith("Processing Time"):
                             trainResult.setProcessingTime(
-                                trainArray[0].replace("Processing Time: ", "").replace(" sec. ", ""))
+                                trainArray[0].replace("Processing Time: ", "").replace(" sec.", ""))
                         else:
                             trainResult.setAvgPprocessingSpped(
                                 trainArray[0].replace("AVG processing speed = ", "").replace(" image/sec", ""))
@@ -425,7 +422,6 @@ class CheckStatusUtil:
                     sleep(waitTimeMs / 5 / 1000)
             except InterruptedError as e:
                 LOGGER.error(json.dumps(e))
-                # TODO: interrupt thread
 
             # Get the model append log
             if osp.exists(modelAppendPath) and osp.getsize(modelAppendPath) > 0:
@@ -507,7 +503,6 @@ class CheckStatusUtil:
                     sleep(0.2)
             except InterruptedError as e:
                 LOGGER.error(json.dumps(e))
-                # TODO: interrupt thread
 
             if osp.exists(modelSwitchStatusPath) and osp.getsize(modelSwitchStatusPath) > 0:
                 modelSwitchResult = ModelSwitchResult()
@@ -552,7 +547,6 @@ class CheckStatusUtil:
                     sleep(waitTimeMs / 5 / 1000)
             except InterruptedError as e:
                 LOGGER.error(json.dumps(e))
-                # TODO: interrupt thread
 
             if osp.exists(modelInsertStatusPath) and osp.getsize(modelInsertStatusPath) > 0:
                 modelInsertResult = ModelInsertResult()
@@ -560,7 +554,6 @@ class CheckStatusUtil:
                 if attributeCheck.listNotEmpty(modelInsertLineList):
                     # init variable
                     modelInsertInfoList = list()
-                    modelInsertInfo = None
                     faceAndPeople = list()
                     face = None
                     people = None
@@ -577,8 +570,7 @@ class CheckStatusUtil:
                                 modelInsertResult.setSuccess(True)
                         elif len(modelInsertArray) == 5:
                             faceAndPeople = modelInsertArray[3].replace("Overall insert:", "").replace("faces/people",
-                                                                                                       "").strip().split(
-                                "/")
+                                                                                                       "").strip().split("/")
                             currentfaceAndPeople = modelInsertArray[4].replace("CurrentDBFaceCout=", "").replace(
                                 "CurrentDBPeopleCount=", "").strip().split(" ")
                             face = int(faceAndPeople[0])
@@ -596,7 +588,7 @@ class CheckStatusUtil:
                             if modelInsertArray[3].startswith("Overall insert time: "):
                                 modelInsertInfo.setInsertProcessTime(modelInsertArray[3][
                                                                      modelInsertArray[3].find("Overall insert time: "):
-                                                                     modelInsertArray[3].find(" sec. ")].strip())
+                                                                     modelInsertArray[3].find(" sec.")].strip())
                             modelInsertInfoList.append(modelInsertInfo)
                     modelInsertResult.setModelInsertInfoList(modelInsertInfoList)
         return modelInsertResult

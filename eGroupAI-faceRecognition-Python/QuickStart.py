@@ -1,11 +1,11 @@
 import json
-import logging
 import os
 import os.path as osp
 import threading
 from threading import Thread
 
 from egroup.util.FolderUtil import FolderUtil
+from egroup.util.LoggingUtil import LOGGER
 from egroupai.engine.control.CreateEngineFileUtil import CreateEngineFileUtil
 from egroupai.engine.control.EngineUtil import EngineUtil
 from egroupai.engine.control.GetResultUtil import GetResultUtil
@@ -13,9 +13,6 @@ from egroupai.engine.entity.ModelAppend import ModelAppend
 from egroupai.engine.entity.ModelInsert import ModelInsert
 from egroupai.engine.entity.RecognizeFace import RecognizeFace
 from egroupai.engine.entity.TrainFace import TrainFace
-from egroup.util.LoggingUtil import LOGGER
-
-
 # init func
 from egroupai.engine.entityEncoder.ModelInsertResultEncoder import ModelInsertResultEncoder
 from egroupai.engine.entityEncoder.TrainResultEncoder import TrainResultEncoder
@@ -38,17 +35,9 @@ outputfacePath = enginePath + "\\outputFace"
 outputframePath = enginePath + "\\outputFrame"
 jsonFolderPath = enginePath + "\\json"
 catchJsonName = "output.cache.egroup"
-# final static
-# allJsonName = "output." + LocalDate.now() + ".egroup"
-# allJsonName = "output." + datetime.today().strftime('%Y-%m-%d') + ".egroup"
 modelInserFilePath = enginePath + "\\Singal_For_Model_Insert.txt"
 videoPath = "resources\\example.mp4"
 resolution = "720p"
-# init file
-# outputfaceFile = new File(outputfacePath.toString())
-# faceDBFile = new File(faceDBPath.toString());
-# outputframeFile = new File(outputframePath.toString())
-# jsonFolderFile = new File(jsonFolderPath.toString())
 # init person path
 jerryFaceDBPath = faceDBPath + "\\jerry"
 leonardFaceDBPath = faceDBPath + "\\leonard"
@@ -57,9 +46,6 @@ danielFaceDBPath = faceDBPath + "\\daniel"
 jerryFaceImageFolderPath = resourcesPath + "\\jerry"
 danielFaceImageFolderPath = resourcesPath + "\\daniel"
 lenardFaceImageFolderPath = resourcesPath + "\\leonard"
-# jerryFaceImageFolder = new File(jerryFaceImageFolderPath.toString())
-# danielFaceImageFolder = new File(danielFaceImageFolderPath.toString());
-# leonardFaceImageFolder = new File(lenardFaceImageFolderPath.toString());
 
 
 def createDir(path):
@@ -78,7 +64,7 @@ def getFaceDBPath(name: str):
     return faceDB
 
 
-def getFaceImageFolder(name: str):
+def getFaceImageFolder(name: str) -> list:
     imagePathList = list()
     if name.lower() == "daniel":
         imagePathList = folderUtil.listPath(danielFaceImageFolderPath)
@@ -108,7 +94,6 @@ def training(name: str):
     # Start training and get result
     trainResult = engineUtil.trainFace(trainFace, logDeleteFlag)
     LOGGER.info(f"trainResult={json.dumps(trainResult, cls=TrainResultEncoder)}")
-    # TODO: LOGGER.info("trainResult=" + new Gson().toJson(trainResult))
 
 
 def recognition(usedFaceDB: str):
@@ -133,7 +118,6 @@ def recognition(usedFaceDB: str):
     # Get all result after recognize is done
     faceList = getResultUtil.cacheResult(str(jsonFolderPath), str(catchJsonName))
     LOGGER.info(f"Faces : {json.dumps(faceList)}")
-    # TODO: logging
 
 
 def modelInsert(name: str):
@@ -146,9 +130,7 @@ def modelInsert(name: str):
     modelInsertVar.setFaceDBList(faceDBList)
     modelInsertVar.setListPath(str(modelInserFilePath))
     modelInsertResult = engineUtil.modelInsert(modelInsertVar, False, 3000)
-    # logging.info(f"modelInsertResult : adbxcjlkfas")
     LOGGER.info(f"modelInsertResult : {json.dumps(modelInsertResult, cls=ModelInsertResultEncoder)}")
-    # TODO: logging
 
 
 def modelAppend():
@@ -166,8 +148,6 @@ def modelAppend():
     modelAppendVar.setEnginePath(str(enginePath))
     modelAppendResult = engineUtil.modelAppend(modelAppendVar, False, 2500)
     LOGGER.info(f"modelInsertResult : {json.dumps(modelAppendResult.__dict__)}")
-    # logging.info(f"modelInsertResult : {json.dumps(modelAppendResult)}")
-    # TODO: logging
 
 
 def synchronized(func):
@@ -194,9 +174,9 @@ def main():
     # // Document: https://reurl.cc/Y6r9Ya
 
     @synchronized
-    def runRecognition():
-        recognition(jerryFaceDBPath + ".faceDB")
-    recognitionThread = Thread(target=runRecognition)
+    def runRecognition(dbPath):
+        recognition(dbPath)
+    recognitionThread = Thread(target=runRecognition, args=(jerryFaceDBPath + ".faceDB", ))
     recognitionThread.start()
     # =================================================Step3 : ModelInsert==============================================
     # Document: https://reurl.cc/EzMpQm
@@ -205,19 +185,10 @@ def main():
     # 2.then Insert leonard Face Model to Face Model and get Recognition Resultat the same time
     modelInsert("leonard")
     # ================================================wait recognition thread done======================================
-
-    # try:
-    #     threading.Condition().wait()
-    # except Exception as e:
-    #     print(e)
-    # TODO: synchronized (recognitionThread) {
-    #       try {
-    #         recognitionThread.wait();
-    #       } catch (InterruptedException e) {
-    #         LOGGER.error(new Gson().toJson(e));
-    #       }
-    #     }
-
+    try:
+        recognitionThread.join()
+    except Exception as err:
+        LOGGER.error(json.dumps(err))
     # ==================================================Step4 : Model Append============================================
     # Example: Append daniel and leonard Face Model into all face DB.
     # Document: https://reurl.cc/EzMpQm
@@ -226,7 +197,7 @@ def main():
     # 2.Execute Model Append instructions (see Model Append Procedure for details)
     modelAppend()
     # 3.Recognition - Example: Recognized with all face DB and get Result（JSON）.
-    recognitionThread = Thread(target=runRecognition)
+    recognitionThread = Thread(target=runRecognition, args=(faceDBPath + ".faceDB", ))
     recognitionThread.start()
 
 

@@ -1,23 +1,23 @@
 class StartupStatus:
     def __init__(self) -> None:
-        self.checkId=None
-        self.checkName=None
-        self.checkFlag=None
+        self._checkId = None
+        self._checkName = None
+        self._checkFlag = None
 
-    def getCheckId(self,checkId):
-        self.checkId=checkId
+    def getCheckId(self, checkId):
+        self._checkId = checkId
 
-    def setCheckId(self,checkId: int):
-        self.checkId=checkId
-    
+    def setCheckId(self, checkId: int):
+        self._checkId = checkId
+
     def getCheckName(self):
-        return self.checkName
+        return self._checkName
 
-    def setCheckName(self,checkName):
-        self.checkName=checkName
-    
+    def setCheckName(self, checkName):
+        self._checkName = checkName
+
     def isCheckFlag(self):
-        return self.checkFlag
-    
-    def setCheckFlag(self,checkFlag):
-        self.checkFlag=checkFlag
+        return self._checkFlag
+
+    def setCheckFlag(self, checkFlag):
+        self._checkFlag = checkFlag

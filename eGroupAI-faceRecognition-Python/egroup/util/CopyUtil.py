@@ -4,19 +4,19 @@ import os
 
 
 class CopyUtil:
-    def copyFile(self,source: str, dest: str):
+    def copyFile(self, source: str, dest: str):
         try:
-          if  not os.path.exists(os.path.dirname(dest)):
-              os.mkdir(os.path.dirname(dest))
-          shutil.copy(source,dest)
-          return True
+            if not os.path.exists(os.path.dirname(dest)):
+                os.mkdir(os.path.dirname(dest))
+            shutil.copy(source, dest)
+            return True
         except IOError:
-          traceback.print_exc()
-          return False
+            traceback.print_exc()
+            return False
 
     def copyFolder(self, source: str, dest: str):
-      try:
-        shutil.copytree(source,dest)
-        return True
-      except IOError:
-        return False
+        try:
+            shutil.copytree(source, dest)
+            return True
+        except IOError:
+            return False

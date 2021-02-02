@@ -1,216 +1,199 @@
-from .FrameFace import FrameFace
+from egroupai.engine.entity.FrameFace import FrameFace
+
 
 class FACEQUALITY:
-    C1="人臉圖模糊"
-    C2="人臉圖過暗"
-    C3="人臉圖過亮"
-    C4="人臉圖非正臉"
-    PASS="人臉圖品質通過"
+    C1 = "人臉圖模糊"
+    C2 = "人臉圖過暗"
+    C3 = "人臉圖過亮"
+    C4 = "人臉圖非正臉"
+    PASS = "人臉圖品質通過"
 
-    def __init__(self,value: str) -> None:
-        self.value=value 
+    def __init__(self, value: str):
+        self._value = value
 
-    def getValue(self)->str:
-        return self.value
+    def getValue(self) -> str:
+        return self._value
 
 
 class Face:
-    def __init__(self) -> None:
-        self.hasFound=None
-        self.personId=None
-        self.similarFaceList=None
-        self.frameFace=None
-        self.framePath=None
-        self.systemTime=None
-        self.videoTime=None
-        self.videoFrameNo=None
-        self.imageSourcePath=None
-        self.faceQuality=None
-        self.faceQualityBlurness=None
-        self.faceQualityLowLuminance=None
-        self.faceQualityHighLuminance=None
-        self.faceQualityHeadpose=None
-        self.faceQualityName=None
-        self.faceSize=None
-        self.livenessHeadposeX=None
-        self.livenessHeadposeY=None
-        self.livenessHeadposeZ=None
-        self.livenessHeadposeClass=None
-        self.result=None
-        self.questionID=None
-        self.faceLabel=None
-        self.depthInfo=None
+    def __init__(self):
+        self._hasFound = None
+        self._personId = None
+        self._similarFaceList = None
+        self._frameFace = None
+        self._framePath = None
+        self._systemTime = None
+        self._videoTime = None
+        self._videoFrameNo = None
+        self._imageSourcePath = None
+        self._faceQuality = None
+        self._faceQualityBlurness = None
+        self._faceQualityLowLuminance = None
+        self._faceQualityHighLuminance = None
+        self._faceQualityHeadpose = None
+        self._faceQualityName = None
+        self._faceSize = None
+        self._livenessHeadposeX = None
+        self._livenessHeadposeY = None
+        self._livenessHeadposeZ = None
+        self._livenessHeadposeClass = None
+        self._result = None
+        self._questionID = None
+        self._faceLabel = None
+        self._depthInfo = None
 
         # program control
-        self.startIndex=None
-        self.endIndex=None
-        self.success=None
-        self.message=None
-        self.statusCode=None
+        self._startIndex = None
+        self._endIndex = None
+        self._success = None
+        self._message = None
+        self._statusCode = None
 
     def getHasFound(self):
-        return self.hasFound
-    
-    def setHasFound(self,hasFound: str):
-        self.hasFound=hasFound
-    
+        return self._hasFound
+
+    def setHasFound(self, hasFound: str):
+        self._hasFound = hasFound
 
     def getPersonId(self):
-        return self.personId
-    
-    def setPersonId(self,personId):
-        self.personId=personId
-    
+        return self._personId
+
+    def setPersonId(self, personId):
+        self._personId = personId
+
     def getSimilarFaceList(self):
-        if self.similarFaceList:
-            return self.similarFaceList
+        if self._similarFaceList:
+            return self._similarFaceList
         return []
-    def setSimilarFaceList(self,similarFaceList: list):
-        self.similarFaceList=similarFaceList
+
+    def setSimilarFaceList(self, similarFaceList: list):
+        self._similarFaceList = similarFaceList
 
     def getFrameFace(self):
-        if self.frameFace:
-            return self.frameFace
+        if self._frameFace:
+            return self._frameFace
         return FrameFace()
-    
-    def setFrameFace(self,frameFace):
+
+    def setFrameFace(self, frameFace):
         if type(frameFace) is not FrameFace:
             raise ValueError("frameFace should be instance of FrameFace")
 
     def getFramePath(self):
-        return self.framePath
-    
-    def setFramePath(self,framePath: str):
-        self.framePath=framePath
+        return self._framePath
+
+    def setFramePath(self, framePath: str):
+        self._framePath = framePath
 
     def getSystemTime(self):
-        return self.systemTime
-    
-    def setSystemTime(self,systemTime: str):
-        self.systemTime=systemTime
+        return self._systemTime
 
+    def setSystemTime(self, systemTime: str):
+        self._systemTime = systemTime
 
     def getVideoTime(self):
-        return self.videoTime        
+        return self._videoTime
 
-    def setVideoTime(self,videoTime):
-        self.videoTime=videoTime     
-        
+    def setVideoTime(self, videoTime):
+        self._videoTime = videoTime
 
     def getVideoFrameNo(self):
-        return self.videoFrameNo
+        return self._videoFrameNo
 
-    def setVideoFrameNo(self,videoFrameNo):
-        self.videoFrameNo=videoFrameNo     
-        
+    def setVideoFrameNo(self, videoFrameNo):
+        self._videoFrameNo = videoFrameNo
 
     def getImageSourcePath(self):
-        return self.imageSourcePath
+        return self._imageSourcePath
 
-    def setImageSourcePath(self,imageSourcePath):
-        self.imageSourcePath=imageSourcePath
-
+    def setImageSourcePath(self, imageSourcePath):
+        self._imageSourcePath = imageSourcePath
 
     def getFaceQuality(self):
-        return self.faceQuality
+        return self._faceQuality
 
-    def setFaceQuality(self,faceQuality):
-        self.faceQuality=faceQuality
-
+    def setFaceQuality(self, faceQuality):
+        self._faceQuality = faceQuality
 
     def getFaceQualityBlurness(self):
-        return self.faceQualityBlurness
+        return self._faceQualityBlurness
 
-    def setFaceQualityBlurness(self,faceQualityBlurness):
-        self.faceQualityBlurness=faceQualityBlurness
-
+    def setFaceQualityBlurness(self, faceQualityBlurness):
+        self._faceQualityBlurness = faceQualityBlurness
 
     def getFaceQualityLowLuminance(self):
-        return self.faceQualityLowLuminance
+        return self._faceQualityLowLuminance
 
-    def setFaceQualityLowLuminance(self,faceQualityLowLuminance):
-        self.faceQualityLowLuminance=faceQualityLowLuminance
-
+    def setFaceQualityLowLuminance(self, faceQualityLowLuminance):
+        self._faceQualityLowLuminance = faceQualityLowLuminance
 
     def getFaceQualityHighLuminance(self):
-        return self.faceQualityHighLuminance
+        return self._faceQualityHighLuminance
 
-    def setFaceQualityHighLuminance(self,faceQualityHighLuminance):
-        self.faceQualityHighLuminance=faceQualityHighLuminance
-
+    def setFaceQualityHighLuminance(self, faceQualityHighLuminance):
+        self._faceQualityHighLuminance = faceQualityHighLuminance
 
     def getFaceQualityHeadpose(self):
-        return self.faceQualityHeadpose
+        return self._faceQualityHeadpose
 
-    def setFaceQualityHeadpose(self,faceQualityHeadpose):
-        self.faceQualityHeadpose=faceQualityHeadpose
-
+    def setFaceQualityHeadpose(self, faceQualityHeadpose):
+        self._faceQualityHeadpose = faceQualityHeadpose
 
     def getFaceQualityName(self):
-        return self.faceQualityName
+        return self._faceQualityName
 
-    def setFaceQualityName(self,faceQualityName):
-        self.faceQualityName=faceQualityName
-
+    def setFaceQualityName(self, faceQualityName):
+        self._faceQualityName = faceQualityName
 
     def getFaceSize(self):
-        return self.faceSize
+        return self._faceSize
 
-    def setFaceSize(self,faceSize):
-        self.faceSize=faceSize
-
+    def setFaceSize(self, faceSize):
+        self._faceSize = faceSize
 
     def getLivenessHeadposeX(self):
-        return self.livenessHeadposeX
+        return self._livenessHeadposeX
 
-    def setLivenessHeadposeX(self,livenessHeadposeX):
-        self.livenessHeadposeX=livenessHeadposeX
-
+    def setLivenessHeadposeX(self, livenessHeadposeX):
+        self._livenessHeadposeX = livenessHeadposeX
 
     def getLivenessHeadposeY(self):
-        return self.livenessHeadposeY
+        return self._livenessHeadposeY
 
-    def setLivenessHeadposeY(self,livenessHeadposeY):
-        self.livenessHeadposeY=livenessHeadposeY
-
+    def setLivenessHeadposeY(self, livenessHeadposeY):
+        self._livenessHeadposeY = livenessHeadposeY
 
     def getLivenessHeadposeZ(self):
-        return self.livenessHeadposeZ
+        return self._livenessHeadposeZ
 
-    def setLivenessHeadposeZ(self,livenessHeadposeZ):
-        self.livenessHeadposeZ=livenessHeadposeZ
-
+    def setLivenessHeadposeZ(self, livenessHeadposeZ):
+        self._livenessHeadposeZ = livenessHeadposeZ
 
     def getLivenessHeadposeClass(self):
-        return self.livenessHeadposeClass
+        return self._livenessHeadposeClass
 
-    def setLivenessHeadposeClass(self,livenessHeadposeClass):
-        self.livenessHeadposeClass=livenessHeadposeClass
-
+    def setLivenessHeadposeClass(self, livenessHeadposeClass):
+        self._livenessHeadposeClass = livenessHeadposeClass
 
     def getResult(self):
-        return self.result
+        return self._result
 
-    def setResult(self,result):
-        self.result=result
-
+    def setResult(self, result):
+        self._result = result
 
     def getQuestionID(self):
-        return self.questionID
+        return self._questionID
 
-    def setQuestionID(self,questionID):
-        self.questionID=questionID
-
+    def setQuestionID(self, questionID):
+        self._questionID = questionID
 
     def getFaceLabel(self):
-        return self.faceLabel
+        return self._faceLabel
 
-    def setFaceLabel(self,faceLabel):
-        self.faceLabel=faceLabel
-
+    def setFaceLabel(self, faceLabel):
+        self._faceLabel = faceLabel
 
     def getDepthInfo(self):
-        return self.depthInfo
+        return self._depthInfo
 
-    def setDepthInfo(self,depthInfo):
-        self.depthInfo=depthInfo
+    def setDepthInfo(self, depthInfo):
+        self._depthInfo = depthInfo

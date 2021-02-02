@@ -9,5 +9,3 @@ class TrainResultEncoder(json.JSONEncoder):
             return obj.to_dict()
         # Let the base class default method raise the TypeError
         return json.JSONEncoder.default(self, obj)
-
-

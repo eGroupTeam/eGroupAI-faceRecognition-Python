@@ -72,7 +72,9 @@ class ModelCompare:
         self._disk = self._enginePath[0]
         if self._attributeCheck.stringsNotNull(self._enginePath, self._disk):
             self._cli = (
-                        "cd " + self._enginePath + " && " + self._disk + ": && ModelCompare " + self._threshold + " " + " \"" + self._modelFaceDBPathA + "\" \"" + self._modelFaceDBPathB + "\" \"" + self._outputCsvPath + "\"");
+                        "cd " + self._enginePath + " && " + self._disk + ": && ModelCompare " + self._threshold + " " +
+                        " \"" + self._modelFaceDBPathA + "\" \"" + self._modelFaceDBPathB + "\" \"" +
+                        self._outputCsvPath + "\"")
         else:
             self._cli = None
         LOGGER.info(f"RecognizeFace cli : {self._cli}")

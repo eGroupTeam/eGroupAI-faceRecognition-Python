@@ -31,12 +31,11 @@ class CmdUtil:
 
             while process.poll() is None:
                 line = process.stdout.readline()
-                # print(line,end="")
                 LOGGER.info(line)
             if process.returncode != 0:
                 return False
             return True
-        except:
+        except Exception:
             LOGGER.error("ERROR", exc_info=True)
 
         return False

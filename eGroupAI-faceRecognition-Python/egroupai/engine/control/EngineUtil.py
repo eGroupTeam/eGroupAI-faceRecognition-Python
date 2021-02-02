@@ -38,14 +38,12 @@ class EngineUtil:
                 if deleteTrainResultStatus:
                     try:
                         os.remove(trainResultLogPath)
-                        # TODO: recheck Files.delete(Paths.get(trainResultLogPath));
                     except IOError as e:
                         LOGGER.error(json.dumps(e))
-                else:
-                    trainResult.setTrainCmdSuccess(False)
-
             else:
                 trainResult.setTrainCmdSuccess(False)
+        else:
+            trainResult.setTrainCmdSuccess(False)
         return trainResult
 
     def modelCompare(self, modelCompare: ModelCompare):
@@ -76,20 +74,14 @@ class EngineUtil:
             flag = cmdUtil.cmdProcessBuilder(recognizeFace.getCommandList())
         return flag
 
-    def recognizeFace(self, recognizeFaceList: list, waitRecognizeDone: bool):
-        # init func
-        # final Gson gson = new Gson();
-        gson = None
+    def recognizeFace(self, recognizeFaceList: list, waitRecognizeDone: bool) -> dict:
         # init variable
-        # HashMap<String, Boolean> hashMap = new HashMap<>();
-        hashMap = None
+        hashMap = dict()
         # Thread RECOGNITION_THREAD;
         RECOGNITION_THREAD = None
 
         if waitRecognizeDone:
-            # init variable
-            # final ExecutorService executorService = Executors.newFixedThreadPool(recognizeFaceList.size());
-            executorService = ThreadPoolExecutor(max_workers=len(recognizeFaceList));
+            executorService = ThreadPoolExecutor(max_workers=len(recognizeFaceList))
             resultList = list()
 
             for idx, recognizeFace_fix in enumerate(recognizeFaceList):
@@ -100,9 +92,10 @@ class EngineUtil:
                     cmdUtil = CmdUtil()
                     recognizeFace_fix.generateCli()
                     if recognizeFace_fix.getCommandList() is not None:
-                        flag = cmdUtil.cmdProcessBuilder()
-                        recognizeFace_fix.getCommandList()
-                        # TODO: hashMap.put(gson.toJson(recognizeFace_fix), flag);
+                        flag = cmdUtil.cmdProcessBuilder(recognizeFace_fix.getCommandList())
+                        _key = json.dumps(recognizeFace_fix)
+                        if _key not in hashMap.keys():
+                            hashMap[_key] = flag
                     return f"辨識執行續:{index}運作結束"
 
                 future = executorService.submit(callFunc)
@@ -112,9 +105,7 @@ class EngineUtil:
             for fs in resultList:
                 try:
                     while not fs.done():
-                        pass
-                    # TODO: FutureLOGGER.debug(fs.get());
-                        print(fs.result())
+                        LOGGER.debug(fs.result())
                 except Exception as e:
                     LOGGER.error(json.dumps(e))
         else:
@@ -127,46 +118,48 @@ class EngineUtil:
                     recognizeFace_fix.generateCli()
                     if recognizeFace_fix.getCommandList() is not None:
                         flag = cmdUtil.cmdProcessBuilder(recognizeFace_fix.getCommandList())
-                        # TODO: hashMap.put(gson.toJson(recognizeFace_fix), flag);
+                        _key = json.dumps(recognizeFace_fix)
+                        if _key not in hashMap.keys():
+                            hashMap[_key] = flag
 
                 RECOGNITION_THREAD = Thread(target=runFunc)
                 RECOGNITION_THREAD.start()
         return hashMap
 
-    def modelAppend(self, modelAppend: ModelAppend, deleteModelAppendStatus: bool, waitTime: int) -> ModelAppendResult:
+    def modelAppend(self, modelAppendVar: ModelAppend, deleteModelAppendStatus: bool,
+                    waitTime: int) -> ModelAppendResult:
         # init func
         attributeCheck = AttributeCheck()
         # init variable
         modelAppendResult = ModelAppendResult()
-        if modelAppend is not None and attributeCheck.stringsNotNull(modelAppend.getEnginePath(),
-                                                                     modelAppend.getListPath(),
-                                                                     modelAppend.getTrainedFaceDBPath()) and (
-                attributeCheck.listNotEmpty(modelAppend.getFaceDBList()) or not modelAppend.getFaceDBHashset().empty()):
+        if modelAppendVar is not None and attributeCheck.stringsNotNull(modelAppendVar.getEnginePath(),
+                                                                        modelAppendVar.getListPath(),
+                                                                        modelAppendVar.getTrainedFaceDBPath()) and (
+                attributeCheck.listNotEmpty(modelAppendVar.getFaceDBList()) or len(
+            modelAppendVar.getFaceDBHashset()) > 0):
             # init func
             txtUtil = TxtUtil()
             checkStatusUtil = CheckStatusUtil()
             # init variable
             dataList = list()
-            modelAppendStatusPath = modelAppend.getEnginePath() + "\\Status.ModelAppend.eGroup"
-            if len(modelAppend.getFaceDBHashset()) > 0:
-                for faceDBPath in modelAppend.getFaceDBHashset():
+            modelAppendStatusPath = modelAppendVar.getEnginePath() + "\\Status.ModelAppend.eGroup"
+            if len(modelAppendVar.getFaceDBHashset()) > 0:
+                for faceDBPath in modelAppendVar.getFaceDBHashset():
                     dataList.append(faceDBPath)
-                else:
-                    modelCount = len(modelAppend.getFaceDBList())
-                    for d in modelAppend.getFaceDBList():
-                        dataList.append(d)
-                txtUtil.create(modelAppend.getListPath(), dataList, Charsets.BIG5)
-                modelAppend.generateCli(modelAppend.getEnginePath())
-                if modelAppend.getCommandList() is not None:
-                    cmdUtil = CmdUtil()
-                    if cmdUtil.cmdProcessBuilder(modelAppend.getCommandList()):
-                        modelAppendResult = checkStatusUtil.modelAppend(modelAppendStatusPath, waitTime)
-
-                        if deleteModelAppendStatus:
-                            try:
-                                os.remove(modelAppendStatusPath)
-                            except Exception as e:
-                                LOGGER.error(json.dumps(e))
+            else:
+                for d in modelAppendVar.getFaceDBList():
+                    dataList.append(d)
+            txtUtil.create(modelAppendVar.getListPath(), dataList, Charsets.BIG5)
+            modelAppendVar.generateCli(modelAppendVar.getEnginePath())
+            if modelAppendVar.getCommandList() is not None:
+                cmdUtil = CmdUtil()
+                if cmdUtil.cmdProcessBuilder(modelAppendVar.getCommandList()):
+                    modelAppendResult = checkStatusUtil.modelAppend(modelAppendStatusPath, waitTime)
+                    if deleteModelAppendStatus:
+                        try:
+                            os.remove(modelAppendStatusPath)
+                        except Exception as e:
+                            LOGGER.error(json.dumps(e))
                     else:
                         modelAppendResult.setAppendCmdSuccess(False)
                 else:
@@ -179,7 +172,6 @@ class EngineUtil:
         # init func
         attributeCheck = AttributeCheck()
         # init variable
-        flag = False
         modelSwitchResult = ModelSwitchResult()
         if modelSwitch is not None and attributeCheck.stringsNotNull(modelSwitch.getNewModelPath(),
                                                                      modelSwitch.getSwitchFilePath(),
@@ -193,7 +185,6 @@ class EngineUtil:
                 # Model
                 dataList = list()
                 dataList.append(newModelFaceDB_path)
-
                 # init func
                 txtUtil = TxtUtil()
                 flag = txtUtil.create(modelSwitch.getSwitchFilePath(), dataList, Charsets.BIG5)
@@ -219,7 +210,6 @@ class EngineUtil:
             txtUtil = TxtUtil()
             checkStatusUtil = CheckStatusUtil()
             # init variable
-            modelCount = len(modelInsert.getFaceDBList())
             dataList = list()
             modelInsertLog_path = modelInsert.getEnginePath() + "\\Status.ModelInsert.eGroup"
 
@@ -230,6 +220,5 @@ class EngineUtil:
             modelInsertResult = checkStatusUtil.modelInsert(modelInsertLog_path, waitTimeMs)
 
             if deleteModelInsertStatusFlag:
-                # TODO REcheck modelInsertLog_file.delete();
                 os.remove(modelInsertLog_path)
         return modelInsertResult

@@ -1,5 +1,3 @@
-from msgpack.fallback import USING_STRINGBUILDER
-
 from egroup.util.AttributeCheck import AttributeCheck
 from egroup.util.LoggingUtil import LOGGER
 from egroupai.engine.entity.TrainResult import TrainResult

@@ -42,7 +42,6 @@ class TrainResult:
     def getPassFacePathList(self):
         if self._attributeCheck is None:
             self._attributeCheck = AttributeCheck()
-        # TODO: Recheck not
         if not self._attributeCheck.listNotEmpty(self._passFacePathList):
             self._passFacePathList = list()
 
