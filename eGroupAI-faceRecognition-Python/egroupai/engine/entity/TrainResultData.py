@@ -1,57 +1,51 @@
 class TrainResultData:
-	def __init__(self) -> None:
-		self.faceCount= None
-		self.sucessCount= None
-		self.failCount= None
-		self.imagePerSec= None
-		self.totalTime= None
-		self.startTime= None
-		self.endTime= None
+    def __init__(self) -> None:
+        self._faceCount = None
+        self._sucessCount = None
+        self._failCount = None
+        self._imagePerSec = None
+        self._totalTime = None
+        self._startTime = None
+        self._endTime = None
 
-	def getFaceCount(self):
-		return self.faceCount
+    def getFaceCount(self):
+        return self._faceCount
 
-	def setFaceCount(self,faceCount):
-		self.faceCount=faceCount
+    def setFaceCount(self, faceCount):
+        self._faceCount = faceCount
 
+    def getSucessCount(self):
+        return self._sucessCount
 
-	def getSucessCount(self):
-		return self.sucessCount
+    def setSucessCount(self, sucessCount):
+        self._sucessCount = sucessCount
 
-	def setSucessCount(self,sucessCount):
-		self.sucessCount=sucessCount
+    def getFailCount(self):
+        return self._failCount
 
+    def setFailCount(self, failCount):
+        self._failCount = failCount
 
-	def getFailCount(self):
-		return self.failCount
+    def getImagePerSec(self):
+        return self._imagePerSec
 
-	def setFailCount(self,failCount):
-		self.failCount=failCount
+    def setImagePerSec(self, imagePerSec):
+        self._imagePerSec = imagePerSec
 
+    def getTotalTime(self):
+        return self._totalTime
 
-	def getImagePerSec(self):
-		return self.imagePerSec
+    def setTotalTime(self, totalTime):
+        self._totalTime = totalTime
 
-	def setImagePerSec(self,imagePerSec):
-		self.imagePerSec=imagePerSec
+    def getStartTime(self):
+        return self._startTime
 
+    def setStartTime(self, startTime):
+        self._startTime = startTime
 
-	def getTotalTime(self):
-		return self.totalTime
+    def getEndTime(self):
+        return self._endTime
 
-	def setTotalTime(self,totalTime):
-		self.totalTime=totalTime
-
-
-	def getStartTime(self):
-		return self.startTime
-
-	def setStartTime(self,startTime):
-		self.startTime=startTime
-
-
-	def getEndTime(self):
-		return self.endTime
-
-	def setEndTime(self,endTime):
-		self.endTime=endTime
+    def setEndTime(self, endTime):
+        self._endTime = endTime

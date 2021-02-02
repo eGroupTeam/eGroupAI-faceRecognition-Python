@@ -1,60 +1,60 @@
 class ModelInsertInfo:
 
-	def __init__(self) -> None:
+    def __init__(self) -> None:
+        self._datetimeString = None
+        self._insertModelStatus = None
+        self._insertFacesCount = None
+        self._insertPeopleCount = None
+        self._CurrDBFaceCout = None
+        self._CurrDBPeopleCount = None
+        self._insertProcessTime = None
 
-		self.datetimeString = None
-		self.insertModelStatus = None
-		self.insertFacesCount = None
-		self.insertPeopleCount = None
-		self.CurrDBFaceCout = None
-		self.CurrDBPeopleCount = None
-		self.insertProcessTime = None
+    def to_dict(self):
+        return {
+            "insertFacesCount": self.getInsertFacesCount(),
+            "insertPeopleCount": self.getInsertPeopleCount(),
+            "CurrDBFaceCout": self.getCurrDBFaceCout(),
+            "CurrDBPeopleCount": self.getCurrDBPeopleCount(),
+        }
 
-	def getDatetimeString(self):
-		return self.datetimeString
+    def getDatetimeString(self):
+        return self._datetimeString
 
-	def setDatetimeString(self,datetimeString):
-		self.datetimeString=datetimeString     
-		
+    def setDatetimeString(self, datetimeString):
+        self._datetimeString = datetimeString
 
-	def getInsertModelStatus(self):
-		return self.insertModelStatus
+    def getInsertModelStatus(self):
+        return self._insertModelStatus
 
-	def setInsertModelStatus(self,insertModelStatus):
-		self.insertModelStatus=insertModelStatus     
-		
+    def setInsertModelStatus(self, insertModelStatus):
+        self._insertModelStatus = insertModelStatus
 
-	def getInsertFacesCount(self):
-		return self.insertFacesCount
+    def getInsertFacesCount(self):
+        return self._insertFacesCount
 
-	def setInsertFacesCount(self,insertFacesCount):
-		self.insertFacesCount=insertFacesCount
+    def setInsertFacesCount(self, insertFacesCount):
+        self._insertFacesCount = insertFacesCount
 
+    def getInsertPeopleCount(self):
+        return self._insertPeopleCount
 
-	def getInsertPeopleCount(self):
-		return self.insertPeopleCount
+    def setInsertPeopleCount(self, insertPeopleCount):
+        self._insertPeopleCount = insertPeopleCount
 
-	def setInsertPeopleCount(self,insertPeopleCount):
-		self.insertPeopleCount=insertPeopleCount
+    def getCurrDBFaceCout(self):
+        return self._CurrDBFaceCout
 
+    def setCurrDBFaceCout(self, CurrDBFaceCout):
+        self._CurrDBFaceCout = CurrDBFaceCout
 
-	def getCurrDBFaceCout(self):
-		return self.CurrDBFaceCout
+    def getCurrDBPeopleCount(self):
+        return self._CurrDBPeopleCount
 
-	def setCurrDBFaceCout(self,CurrDBFaceCout):
-		self.CurrDBFaceCout=CurrDBFaceCout
+    def setCurrDBPeopleCount(self, CurrDBPeopleCount):
+        self._CurrDBPeopleCount = CurrDBPeopleCount
 
+    def getInsertProcessTime(self):
+        return self._insertProcessTime
 
-	def getCurrDBPeopleCount(self):
-		return self.CurrDBPeopleCount
-
-	def setCurrDBPeopleCount(self,CurrDBPeopleCount):
-		self.CurrDBPeopleCount=CurrDBPeopleCount
-
-
-	def getInsertProcessTime(self):
-		return self.insertProcessTime
-
-	def setInsertProcessTime(self,insertProcessTime):
-		self.insertProcessTime=insertProcessTime
-
+    def setInsertProcessTime(self, insertProcessTime):
+        self._insertProcessTime = insertProcessTime

@@ -1,66 +1,69 @@
 import subprocess
-import logging
 import os
 
+from egroup.util.AttributeCheck import AttributeCheck
+from egroup.util.LoggingUtil import LOGGER
+
+
 class CmdUtil:
-  TASKLIST = "tasklist"
-  KILL = "taskkill /F /IM "
+    TASKLIST = "tasklist"
+    KILL = "taskkill /F /IM "
 
-  def cmdProcessBuilder(commandList: list) -> bool:
-    process=subprocess.Popen(commandList,stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,shell=True)
+    @staticmethod
+    def cmdProcessBuilder(commandList: list) -> bool:
+        attributeCheck = AttributeCheck()
+        process = subprocess.Popen(commandList[-1], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                   universal_newlines=True, shell=True, errors="ignore", encoding="Big5")
+        while process.poll() is None:
+            line = process.stdout.readline().strip()
+            if not attributeCheck.stringsNotNull(line):
+                continue
+            LOGGER.info(line)
+        if process.returncode < 0:
+            return False
+        return True
 
-    while process.poll() is None:
-      line = process.stdout.readline()
-      # print(line,end="")
-      logging.info(line)
-    if process.returncode!=0:
-      return False
-    return True
+    def server_cmdProcessBuilder(self, commandList: list) -> bool:
 
-  def server_cmdProcessBuilder(commandList: list) -> bool:
+        try:
+            process = subprocess.Popen(commandList, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                       universal_newlines=True, shell=True)
 
-    try:
-      process=subprocess.Popen(commandList,stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True,shell=True)
+            while process.poll() is None:
+                line = process.stdout.readline()
+                LOGGER.info(line)
+            if process.returncode != 0:
+                return False
+            return True
+        except Exception:
+            LOGGER.error("ERROR", exc_info=True)
 
-      while process.poll() is None:
-        line = process.stdout.readline()
-        # print(line,end="")
-        logging.info(line)
-      if process.returncode!=0:
         return False
-      return True
-    except:
-      logging.error("ERROR",exc_info=True)
-    
-    return False
 
-  
-  def isProcessRunning(serviceName: str) -> bool:
-    try:
-      process=subprocess.Popen([CmdUtil.TASKLIST],stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True,shell=True)
+    def isProcessRunning(self, serviceName: str) -> bool:
+        try:
+            process = subprocess.Popen([CmdUtil.TASKLIST], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                       universal_newlines=True, shell=True)
+            while process.poll() is None:
+                line = process.stdout.readline()
+                if serviceName in line:
+                    return True
+        except Exception as e:
+            LOGGER.error("ERROR", exc_info=True)
 
-      while process.poll() is None:
-        line=process.stdout.readline()
-        if serviceName in line:
-          return True
-    except:
-      logging.error("ERROR",exc_info=True)
-    
-    return False
+        return False
 
+    def cmdProcessCheck(self, processName: str) -> bool:
+        if self.isProcessRunning(processName):
+            return True
+        return False
 
-  def cmdProcessCheck(processName: str) -> bool:
-    if CmdUtil.isProcessRunning(processName):
-      return True
-    return False
+    def killProcess(self, processName: str):
+        try:
+            os.system(self.KILL + processName)
+        except:
+            LOGGER.error("Error", exc_info=True)
 
-  def killProcess(processName: str):
-    try:
-      os.system(CmdUtil.KILL+processName)
-    except:
-      logging.error("Error",exc_info=True)
-
-
-  def cmdProcessTerminate(processName: str):
-    if CmdUtil.isProcessRunning(processName):
-      CmdUtil.killProcess(processName)
+    def cmdProcessTerminate(self, processName: str):
+        if self.isProcessRunning(processName):
+            self.killProcess(processName)
