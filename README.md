@@ -4,7 +4,7 @@
   * [QuickStart-C#](https://github.com/eGroupTeam/eGroupAI-faceRecognition-CSharp)
 # QuickStart
 * [QuickStart Document](https://reurl.cc/Y6r9N4)
-* Video - Quick Start by Python
+* [Video - Quick Start by Python](https://www.youtube.com/watch?v=ou_PqVkzVQM)
    * Clone Project
    * Copy project env into project
    * Import Project
